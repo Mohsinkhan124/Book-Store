@@ -116,10 +116,10 @@ const BookCard = ({ book, delay = 0 }) => {
       </div>
 
       <div className="p-4 space-y-2">
-        <h3 className="font-display font-bold text-base sm:text-lg leading-tight line-clamp-2 min-h-[1.5rem]">
+        <h3 className="font-display text-black font-bold text-base sm:text-lg leading-tight line-clamp-2 min-h-[1.5rem]">
           {book.title}
         </h3>
-        <p className="text-muted text-xs sm:text-sm italic font-serif">
+        <p className="text-muted text-xs text-black dark:text-gray-300 sm:text-sm italic font-serif">
           by {book.author}
         </p>
         <div className="flex items-center justify-between pt-2">
