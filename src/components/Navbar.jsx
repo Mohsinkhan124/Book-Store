@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import ThemeToggle from './ThemeToggle';
-import { 
-  BookOpen, LogOut, User, LayoutDashboard, Menu, X, 
-  ChevronDown, Home, Info, Mail, Settings, HelpCircle
+import {
+  BookOpen, LogOut, User, LayoutDashboard, Menu, X,
+  ChevronDown, Home, Info, Mail
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -52,7 +52,7 @@ const Navbar = () => {
     <>
       <nav className="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-4 sm:px-6 lg:px-8 py-3 shadow-sm">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          
+
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 sm:gap-3 group flex-shrink-0">
             <motion.div
@@ -76,11 +76,10 @@ const Navbar = () => {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`relative px-3 lg:px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  isActive(link.to)
+                className={`relative px-3 lg:px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive(link.to)
                     ? 'text-primary'
                     : 'text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary'
-                }`}
+                  }`}
               >
                 {isActive(link.to) && (
                   <motion.div
@@ -95,63 +94,101 @@ const Navbar = () => {
           </div>
 
           {/* Right Section - Auth Section */}
-<div className="flex items-center gap-1 sm:gap-3">
-  <ThemeToggle />
+          <div className="flex items-center gap-1 sm:gap-3">
+            <ThemeToggle />
 
-  {/* LOGGED IN USER - Show User Menu */}
-  {user ? (
-    <div className="relative" ref={dropdownRef}>
-      {/* User dropdown - same as before */}
-      <motion.button
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-        className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
-      >
-        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
-          <User size={14} className="sm:w-4 sm:h-4 text-white" />
-        </div>
-        <span className="text-sm font-semibold hidden sm:block">
-          {user.username?.split(' ')[0] || user.username}
-        </span>
-        <ChevronDown 
-          size={14} 
-          className={`text-muted transition-transform duration-200 hidden sm:block ${
-            isUserDropdownOpen ? 'rotate-180' : ''
-          }`}
-        />
-      </motion.button>
-      {/* ... rest of user dropdown ... */}
-    </div>
-  ) : (
-    // ✅ FIXED: Logged out state - mobile friendly
-    <div className="flex items-center gap-1 sm:gap-2">
-      {/* Login button - hidden on mobile, visible on sm and up */}
-      <Link
-        to="/login"
-        className="hidden sm:block px-3 py-1.5 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-primary transition-colors"
-      >
-        Login
-      </Link>
-      
-      {/* Signup button - visible on all screens but smaller on mobile */}
-      <Link
-        to="/signup"
-        className="px-3 sm:px-4 py-1.5 text-sm font-semibold bg-primary text-white rounded-full hover:bg-primary/90 transition-all shadow-md whitespace-nowrap"
-      >
-        Sign Up
-      </Link>
-    </div>
-  )}
+            {/* LOGGED IN USER - Show User Menu */}
+            {user ? (
+              <div className="relative" ref={dropdownRef}>
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+                  className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+                >
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
+                    <User size={14} className="sm:w-4 sm:h-4 text-white" />
+                  </div>
+                  <span className="text-sm font-semibold hidden sm:block">
+                    {user.username?.split(' ')[0] || user.username}
+                  </span>
+                  <ChevronDown
+                    size={14}
+                    className={`text-muted transition-transform duration-200 hidden sm:block ${isUserDropdownOpen ? 'rotate-180' : ''
+                      }`}
+                  />
+                </motion.button>
 
-  {/* Mobile Menu Button */}
-  <button
-    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-    className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex-shrink-0"
-    aria-label="Toggle menu"
-  >
-    {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-  </button>
-</div>
+                {/* User Dropdown Menu - Desktop */}
+                <AnimatePresence>
+                  {isUserDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+                    >
+                      <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+                        <p className="font-semibold text-gray-900 dark:text-white">{user.username}</p>
+                        <p className="text-xs text-muted mt-0.5">{user.email}</p>
+                        <span className="inline-block mt-1.5 text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+                          {user.role === 'admin' ? 'Admin' : 'Member'}
+                        </span>
+                      </div>
+
+                      <div className="py-1">
+                        {/* Admin Dashboard - Only for admin */}
+                        {user.role === 'admin' && (
+                          <Link
+                            to="/admin"
+                            onClick={() => setIsUserDropdownOpen(false)}
+                            className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-primary/10 transition-colors text-primary w-full"
+                          >
+                            <LayoutDashboard size={16} />
+                            <span>Admin Dashboard</span>
+                          </Link>
+                        )}
+
+                        <div className="h-px bg-gray-200 dark:bg-gray-700 my-1" />
+
+                        <button
+                          onClick={handleLogout}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors w-full"
+                        >
+                          <LogOut size={16} />
+                          <span>Sign Out</span>
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              // Logged Out State - Mobile Friendly
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Link
+                  to="/login"
+                  className="hidden sm:block px-3 py-1.5 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-primary transition-colors"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signup"
+                  className="px-3 sm:px-4 py-1.5 text-sm font-semibold bg-primary text-white rounded-full hover:bg-primary/90 transition-all shadow-md whitespace-nowrap"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex-shrink-0"
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -166,7 +203,7 @@ const Navbar = () => {
               onClick={() => setIsMobileMenuOpen(false)}
               className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 md:hidden"
             />
-            
+
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
@@ -215,61 +252,29 @@ const Navbar = () => {
                     key={link.to}
                     to={link.to}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-5 py-3.5 text-base transition-colors ${
-                      isActive(link.to)
+                    className={`flex items-center gap-3 px-5 py-3.5 text-base transition-colors ${isActive(link.to)
                         ? 'bg-primary/10 text-primary font-medium border-r-2 border-primary'
                         : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                    }`}
+                      }`}
                   >
                     <link.icon size={20} />
                     <span>{link.label}</span>
                   </Link>
                 ))}
-                
-                {/* Logged In User Links */}
-                {user && (
-                  <>
-                    {user.role === 'admin' && (
-                      <Link
-                        to="/admin"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex items-center gap-3 px-5 py-3.5 text-base text-primary font-medium hover:bg-primary/10 transition-colors"
-                      >
-                        <LayoutDashboard size={20} />
-                        <span>Admin Dashboard</span>
-                      </Link>
-                    )}
-                    
-                    <Link
-                      to="/profile"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="flex items-center gap-3 px-5 py-3.5 text-base text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    >
-                      <User size={20} />
-                      <span>Profile Settings</span>
-                    </Link>
-                    
-                    <Link
-                      to="/settings"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="flex items-center gap-3 px-5 py-3.5 text-base text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    >
-                      <Settings size={20} />
-                      <span>Preferences</span>
-                    </Link>
-                    
-                    <Link
-                      to="/help"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="flex items-center gap-3 px-5 py-3.5 text-base text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    >
-                      <HelpCircle size={20} />
-                      <span>Help & Support</span>
-                    </Link>
-                  </>
+
+                {/* Admin Dashboard - Only for admin (Mobile) */}
+                {user && user.role === 'admin' && (
+                  <Link
+                    to="/admin"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-3 px-5 py-3.5 text-base text-primary font-medium hover:bg-primary/10 transition-colors"
+                  >
+                    <LayoutDashboard size={20} />
+                    <span>Admin Dashboard</span>
+                  </Link>
                 )}
-                
-                {/* Logged Out User Links */}
+
+                {/* Logged Out User Links - Mobile */}
                 {!user && (
                   <>
                     <Link
@@ -277,7 +282,7 @@ const Navbar = () => {
                       onClick={() => setIsMobileMenuOpen(false)}
                       className="flex items-center gap-3 px-5 py-3.5 text-base text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                     >
-                      <span className="w-5">→</span>
+                      <span className="w-5"><i className="fas fa-sign-in-alt"></i></span>
                       <span>Sign In</span>
                     </Link>
                     <Link
@@ -285,14 +290,14 @@ const Navbar = () => {
                       onClick={() => setIsMobileMenuOpen(false)}
                       className="flex items-center gap-3 px-5 py-3.5 text-base text-primary font-medium hover:bg-primary/10 transition-colors"
                     >
-                      <span className="w-5">✨</span>
+                      <span className="w-5"><i className="fas fa-user-plus"></i></span>
                       <span>Sign Up</span>
                     </Link>
                   </>
                 )}
               </div>
 
-              {/* Logout Button - Only for logged in users */}
+              {/* Logout Button - Only for logged in users (Mobile) */}
               {user && (
                 <div className="p-5 border-t border-gray-200 dark:border-gray-800">
                   <button
